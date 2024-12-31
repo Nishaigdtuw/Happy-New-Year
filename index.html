@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy New Year Interactive</title>
+    <style>
+        body {
+            margin: 0;
+            background: linear-gradient(120deg, #1e3c72, #2a5298);
+            color: white;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .container {
+            text-align: center;
+        }
+        .message {
+            font-size: 3rem;
+            text-shadow: 0 0 10px #fff, 0 0 20px #ff8c00, 0 0 30px #ff4500;
+            animation: glow 3s infinite;
+        }
+        .button, .option {
+            margin-top: 20px;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            color: white;
+            background: #ff4500;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        .button:hover, .option:hover {
+            background: #ffd700;
+            color: black;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+        .options {
+            display: none;
+            margin-top: 20px;
+            animation: fadeIn 1s ease-in-out forwards;
+        }
+
+        /* Final Celebration Frame */
+        .celebration-frame {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 40px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            text-align: center;
+            font-size: 4rem;
+            color: #ffd700;
+            box-shadow: 0 0 50px 10px rgba(255, 215, 0, 0.7);
+            z-index: 1000;
+            opacity: 0;
+            animation: frameAppear 2s forwards, confettiFall 4s infinite;
+        }
+
+        /* Confetti Animation */
+        .confetti {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background-color: #ff6347;
+            animation: confettiFall 3s infinite;
+            opacity: 0;
+            animation-delay: 0.5s;
+        }
+
+        @keyframes glow {
+            0% { text-shadow: 0 0 10px #ff4500; }
+            50% { text-shadow: 0 0 20px #ffd700; }
+            100% { text-shadow: 0 0 10px #ff4500; }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes frameAppear {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(500px);
+                opacity: 1;
+            }
+        }
+
+        /* Eye-Catching Button Effects */
+        .pulse-button {
+            position: relative;
+            padding: 20px 40px;
+            font-size: 1.5rem;
+            color: white;
+            background: #ff4500;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            animation: pulse 2s infinite ease-in-out;
+            box-shadow: 0 0 20px rgba(255, 69, 0, 0.6);
+            transition: transform 0.2s;
+        }
+
+        .pulse-button:hover {
+            transform: scale(1.1);
+            background: #ffd700;
+            color: black;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="message">🎉 Happy New Year 2024! 🎉</div>
+        <button class="button" id="startButton" onclick="showLevel1()">Click to Start</button>
+
+        <!-- Level 1 -->
+        <div class="options" id="level1">
+            <button class="option" onclick="showLevel2('Success')">🎯 Success</button>
+            <button class="option" onclick="showLevel2('Happiness')">😊 Happiness</button>
+            <button class="option" onclick="showLevel2('Health')">💪 Health</button>
+        </div>
+
+        <!-- Level 2 -->
+        <div class="options" id="level2">
+            <div id="level2Message" style="margin-top: 20px; font-size: 1.5rem;"></div>
+            <button class="option" onclick="showLevel3('Professional Growth')">📈 Professional Growth</button>
+            <button class="option" onclick="showLevel3('Personal Fulfillment')">🌟 Personal Fulfillment</button>
+        </div>
+
+        <!-- Level 3 -->
+        <div class="options" id="level3">
+            <div id="level3Message" style="margin-top: 20px; font-size: 1.5rem;"></div>
+            <button class="pulse-button" onclick="finalMessage()">🎉 Let’s Celebrate 🎉</button>
+        </div>
+
+        <!-- Final Celebration Frame -->
+        <div class="celebration-frame" id="celebrationFrame">
+            🎆 Wishing you an amazing 2024! 🎆
+        </div>
+
+        <!-- Confetti Elements -->
+        <div id="confettiContainer"></div>
+    </div>
+
+    <script>
+        function showLevel1() {
+            document.getElementById('startButton').style.display = 'none';
+            document.getElementById('level1').style.display = 'block';
+        }
+
+        function showLevel2(choice) {
+            document.getElementById('level1').style.display = 'none';
+            document.getElementById('level2Message').textContent = `You chose ${choice}. What would you like next?`;
+            document.getElementById('level2').style.display = 'block';
+        }
+
+        function showLevel3(choice) {
+            document.getElementById('level2').style.display = 'none';
+            document.getElementById('level3Message').textContent = `Great choice: ${choice}. Ready to celebrate?`;
+            document.getElementById('level3').style.display = 'block';
+        }
+
+        function finalMessage() {
+            // Show Final Celebration Frame
+            const celebrationFrame = document.getElementById('celebrationFrame');
+            celebrationFrame.style.display = 'block';
+
+            // Trigger Confetti Animation
+            triggerConfetti();
+
+            // After the celebration frame appears, show the message
+            setTimeout(() => {
+                alert("🎆 Wishing you an amazing 2024! 🎆");
+            }, 2000); // Delay the alert to show after animation
+        }
+
+        function triggerConfetti() {
+            const confettiContainer = document.getElementById('confettiContainer');
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.animationDelay = `${Math.random() * 2}s`;
+                confettiContainer.appendChild(confetti);
+                setTimeout(() => {
+                    confetti.remove();
+                }, 4000); // Remove after 4 seconds
+            }
+        }
+    </script>
+</body>
+</html>
